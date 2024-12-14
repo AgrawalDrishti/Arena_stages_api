@@ -17,18 +17,30 @@ export class NotificationsService {
   ) {}
 
   async registerDevice(registerDeviceDto: RegisterDeviceDto): Promise<{ message: string }> {
-    const { deviceToken } = registerDeviceDto;
-    const existingToken = await this.notificationRepository.findOne({ where: { deviceToken } });
-
-    if (existingToken) {
-      throw new ConflictException('Device is already registered for notifications.');
+    const { deviceToken, stage_id } = registerDeviceDto;
+  
+    // Validate stage existence
+    const stage = await this.stageRepository.findOne({ where: { stage_id } });
+    if (!stage) {
+      throw new NotFoundException('Stage not found.');
     }
-
-    const notification = this.notificationRepository.create({ deviceToken });
+  
+    // Check if the device is already registered for this stage
+    const existingToken = await this.notificationRepository.findOne({
+      where: { deviceToken, stage },
+    });
+  
+    if (existingToken) {
+      throw new ConflictException('Device is already registered for notifications for this stage.');
+    }
+  
+    // Register the device for the stage
+    const notification = this.notificationRepository.create({ deviceToken, stage });
     await this.notificationRepository.save(notification);
-
-    return { message: 'Device registered for notifications.' };
+  
+    return { message: 'Device registered for notifications for the stage.' };
   }
+  
 
   async sendPushNotification(sendPushNotificationDto: SendPushNotificationDto): Promise<{ message: string }> {
     const { stage_id, event_type, message } = sendPushNotificationDto;

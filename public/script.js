@@ -1,226 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stages API Frontend</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 20px;
-    }
-    .form-container {
-      margin-bottom: 20px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-    }
-    input, button, textarea, select {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    .response {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      background-color: #eef;
-    }
-  </style>
-</head>
-<body>
-  <h1>Stages API Frontend</h1>
-
-  <!-- Authentication Form -->
-  <div class="form-container">
-    <h3>1. Authentication</h3>
-    <form id="authForm">
-      <label for="username">Username:</label>
-      <input type="text" id="username" placeholder="Enter Username" required>
-      
-      <label for="password">Password:</label>
-      <input type="password" id="password" placeholder="Enter Password" required>
-      
-      <button type="submit">Authenticate</button>
-    </form>
-  </div>
-
-  <!-- Schedule Stage -->
-  <div class="form-container">
-    <h3>2. Schedule Stage</h3>
-    <form id="scheduleStageForm">
-      <label for="stageName">Stage Name:</label>
-      <input type="text" id="stageName" placeholder="Enter Stage Name" required>
-      
-      <label for="scheduledTime">Scheduled Time:</label>
-      <input type="datetime-local" id="scheduledTime" required>
-      
-      <button type="submit">Schedule Stage</button>
-    </form>
-  </div>
-
-  <!-- Get Scheduled Stages -->
-  <!-- Get Scheduled Stages -->
-<div class="form-container">
-  <h3>3. Get Scheduled Stages</h3>
-  <form id="getStagesForm">
-    <label for="hostUserId">Host User ID:</label>
-    <input type="text" id="hostUserId" placeholder="Enter Host User ID" required>
-    
-    <label for="limit">Limit:</label>
-    <input type="number" id="limit" placeholder="Enter Limit" required>
-    
-    <label for="offset">Offset:</label>
-    <input type="number" id="offset" placeholder="Enter Offset" required>
-    
-    <button type="submit">Get Stages</button>
-  </form>
-</div>
-
-<!-- Add Comment -->
-<div class="form-container">
-  <h3>4. Add Comment</h3>
-  <form id="addCommentForm">
-    <label for="commentStageId">Stage ID:</label>
-    <input type="text" id="commentStageId" placeholder="Enter Stage ID" required>
-    
-    <label for="content">Content:</label>
-    <textarea id="content" placeholder="Enter Comment Content" required></textarea>
-    
-    <button type="submit">Add Comment</button>
-  </form>
-</div>
-
-<!-- Expand Comments -->
-<div class="form-container">
-  <h3>5. Expand Comments</h3>
-  <form id="expandCommentsForm">
-    <label for="expandStageId">Stage ID:</label>
-    <input type="text" id="expandStageId" placeholder="Enter Stage ID" required>
-    
-    <label for="parentCommentId">Parent Comment ID:</label>
-    <input type="text" id="parentCommentId" placeholder="Enter Parent Comment ID" required>
-    
-    <label for="limit">Limit:</label>
-    <input type="number" id="limit" placeholder="Number of Comments" required>
-    
-    <label for="offset">Offset:</label>
-    <input type="number" id="offset" placeholder="Start Offset" required>
-    
-    <button type="submit">Expand Comments</button>
-  </form>
-</div>
-
-<!-- Get Comment Count -->
-<div class="form-container">
-  <h3>6. Get Comment Count</h3>
-  <form id="getCommentCountForm">
-    <label for="commentCountStageId">Stage ID:</label>
-    <input type="text" id="commentCountStageId" placeholder="Enter Stage ID" required>
-    
-    <button type="submit">Get Comment Count</button>
-  </form>
-</div>
-
-
-
-<div class="form-container">
-  <h3>7. Like Stage</h3>
-  <form id="likeStageForm">
-    <label for="likeStageId">Stage ID:</label>
-    <input type="text" id="likeStageId" placeholder="Enter Stage ID" required>
-    
-    <button type="submit">Like Stage</button>
-  </form>
-</div>
-
-<!-- Get Like Count -->
-<div class="form-container">
-  <h3>8. Get Like Count</h3>
-  <form id="getLikeCountForm">
-    <label for="likeCountStageId">Stage ID:</label>
-    <input type="text" id="likeCountStageId" placeholder="Enter Stage ID" required>
-    
-    <button type="submit">Get Like Count</button>
-  </form>
-</div>
-
-  <!-- Repost Stage -->
-  <!-- Repost Stage -->
-<div class="form-container">
-  <h3>9. Repost Stage</h3>
-  <form id="repostStageForm">
-    <label for="repostStageId">Stage ID:</label>
-    <input type="text" id="repostStageId" placeholder="Enter Stage ID" required>
-    
-    <label for="repostMessage">Repost Message (Optional):</label>
-    <textarea id="repostMessage" placeholder="Enter Repost Message"></textarea>
-    
-    <button type="submit">Repost Stage</button>
-  </form>
-</div>
-
-<!-- Get Repost Count -->
-<div class="form-container">
-  <h3>10. Get Repost Count</h3>
-  <form id="getRepostCountForm">
-    <label for="repostCountStageId">Stage ID:</label>
-    <input type="text" id="repostCountStageId" placeholder="Enter Stage ID" required>
-    
-    <button type="submit">Get Repost Count</button>
-  </form>
-</div>
-
-<div class="form-container">
-  <h3>11. Register Device for Notifications</h3>
-  <form id="registerDeviceForm">
-    <label for="deviceToken">Device Token:</label>
-    <input type="text" id="deviceToken" placeholder="Enter Device Token (Leave blank to auto-generate)">
-    
-    <label for="stageId">Stage ID:</label>
-    <input type="text" id="stageId" placeholder="Enter Stage ID" required>
-    
-    <button type="submit">Register Device</button>
-  </form>
-</div>
-
-<!-- Send Push Notifications -->
-<div class="form-container">
-  <h3>12. Send Push Notifications</h3>
-  <form id="sendNotificationForm">
-    <label for="notificationStageId">Stage ID:</label>
-    <input type="text" id="notificationStageId" placeholder="Enter Stage ID" required>
-    
-    <label for="eventType">Event Type:</label>
-    <input type="text" id="eventType" placeholder="Enter Event Type (e.g., scheduled)" required>
-    
-    <label for="notificationMessage">Message:</label>
-    <textarea id="notificationMessage" placeholder="Enter Notification Message" required></textarea>
-    
-    <button type="submit">Send Notifications</button>
-  </form>
-</div>
-
-
-  <!-- Response Section -->
-  <div class="response" id="responseContainer">
-    <h3>Response</h3>
-    <pre id="response"></pre>
-  </div>
-
-  <script>
     const apiBaseUrl = 'http://localhost:3001/api'; // Replace with your API base URL
     let accessToken = ''; // Store the access token after authentication
 
     // Utility to display API responses
-    function displayResponse(data) {
-      const responseContainer = document.getElementById('response');
-      responseContainer.textContent = JSON.stringify(data, null, 2);
-    }
+    function displayResponse(data, targetId) {
+        const responseContainer = document.getElementById(targetId);
+        if (!responseContainer) {
+          console.error(`Response container with id "${targetId}" not found.`);
+          return;
+        }
+        responseContainer.textContent = JSON.stringify(data, null, 2);
+      }
+      
 
     // Authentication
     document.getElementById('authForm').addEventListener('submit', async (event) => {
@@ -236,9 +26,9 @@
         });
         const data = await response.json();
         accessToken = data.access_token; // Store the access token
-        displayResponse(data);
+        displayResponse(data, 'authResponse');
       } catch (error) {
-        displayResponse(error.message);
+        displayResponse({ error: error.message }, 'authResponse');
       }
     });
 
@@ -839,8 +629,3 @@ function displayResponse(data) {
   responseContainer.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
 }
 
-
-
-  </script>
-</body>
-</html>
