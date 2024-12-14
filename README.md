@@ -66,6 +66,11 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+Run frontend on : 
+```bash
+http://localhost:3001
+```
+
 ## Run tests
 
 ```bash
@@ -79,6 +84,9 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="./public/frontend-img.png" width="" alt="Nest Logo" /></a>
+</p>
 
 
 
