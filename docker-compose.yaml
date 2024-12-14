@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Dris@2904"
+      POSTGRES_DB: stages_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: Dris@2904
+      DATABASE_NAME: stages_db
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+
+volumes:
+  db-data:

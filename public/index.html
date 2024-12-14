@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stages API Frontend</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+    }
+    .form-container {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    input, button, textarea, select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .response {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #eef;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stages API Frontend</h1>
+
+  <!-- Authentication Form -->
+  <div class="form-container">
+    <h3>1. Authentication</h3>
+    <form id="authForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" placeholder="Enter Username" required>
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Enter Password" required>
+      
+      <button type="submit">Authenticate</button>
+    </form>
+  </div>
+
+  <!-- Schedule Stage -->
+  <div class="form-container">
+    <h3>2. Schedule Stage</h3>
+    <form id="scheduleStageForm">
+      <label for="stageName">Stage Name:</label>
+      <input type="text" id="stageName" placeholder="Enter Stage Name" required>
+      
+      <label for="scheduledTime">Scheduled Time:</label>
+      <input type="datetime-local" id="scheduledTime" required>
+      
+      <button type="submit">Schedule Stage</button>
+    </form>
+  </div>
+
+  <!-- Get Scheduled Stages -->
+  <!-- Get Scheduled Stages -->
+<div class="form-container">
+  <h3>3. Get Scheduled Stages</h3>
+  <form id="getStagesForm">
+    <label for="hostUserId">Host User ID:</label>
+    <input type="text" id="hostUserId" placeholder="Enter Host User ID" required>
+    
+    <label for="limit">Limit:</label>
+    <input type="number" id="limit" placeholder="Enter Limit" required>
+    
+    <label for="offset">Offset:</label>
+    <input type="number" id="offset" placeholder="Enter Offset" required>
+    
+    <button type="submit">Get Stages</button>
+  </form>
+</div>
+
+
+  <!-- Add Comment -->
+  <!-- Add Comment -->
+<!-- Add Comment -->
+<!-- Add Comment -->
+<div class="form-container">
+  <h3>4. Add Comment</h3>
+  <form id="addCommentForm">
+    <label for="commentStageId">Stage ID:</label>
+    <input type="text" id="commentStageId" placeholder="Enter Stage ID" required>
+    
+    <label for="content">Content:</label>
+    <textarea id="content" placeholder="Enter Comment Content" required></textarea>
+    
+    <button type="submit">Add Comment</button>
+  </form>
+</div>
+
+
+
+
+<div class="form-container">
+  <h3>5. Like Stage</h3>
+  <form id="likeStageForm">
+    <label for="likeStageId">Stage ID:</label>
+    <input type="text" id="likeStageId" placeholder="Enter Stage ID" required>
+    
+    <button type="submit">Like Stage</button>
+  </form>
+</div>
+
+<!-- Get Like Count -->
+<div class="form-container">
+  <h3>6. Get Like Count</h3>
+  <form id="getLikeCountForm">
+    <label for="likeCountStageId">Stage ID:</label>
+    <input type="text" id="likeCountStageId" placeholder="Enter Stage ID" required>
+    
+    <button type="submit">Get Like Count</button>
+  </form>
+</div>
+
+  <!-- Repost Stage -->
+  <div class="form-container">
+    <h3>6. Repost Stage</h3>
+    <form id="repostStageForm">
+      <label for="repostStageId">Stage ID:</label>
+      <input type="text" id="repostStageId" placeholder="Enter Stage ID" required>
+      
+      <label for="repostMessage">Repost Message:</label>
+      <textarea id="repostMessage" placeholder="Enter Repost Message"></textarea>
+      
+      <button type="submit">Repost Stage</button>
+    </form>
+  </div>
+
+  <!-- Response Section -->
+  <div class="response" id="responseContainer">
+    <h3>Response</h3>
+    <pre id="response"></pre>
+  </div>
+
+  <script>
+    const apiBaseUrl = 'http://localhost:3001/api'; // Replace with your API base URL
+    let accessToken = ''; // Store the access token after authentication
+
+    // Utility to display API responses
+    function displayResponse(data) {
+      const responseContainer = document.getElementById('response');
+      responseContainer.textContent = JSON.stringify(data, null, 2);
+    }
+
+    // Authentication
+    document.getElementById('authForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch(`${apiBaseUrl}/auth/login/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await response.json();
+        accessToken = data.access_token; // Store the access token
+        displayResponse(data);
+      } catch (error) {
+        displayResponse(error.message);
+      }
+    });
+
+    // Schedule Stage
+    document.getElementById('scheduleStageForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const stageName = document.getElementById('stageName').value;
+      const scheduledTime = document.getElementById('scheduledTime').value;
+
+      try {
+        const response = await fetch(`${apiBaseUrl}/stages/schedule/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ stage_name: stageName, time: scheduledTime }),
+        });
+        const data = await response.json();
+        displayResponse(data);
+      } catch (error) {
+        displayResponse(error.message);
+      }
+    });
+
+    // Get stages
+    // Handle Get Scheduled Stages Form Submission
+    document.getElementById('getStagesForm').addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default page reload on form submission
+
+      const hostUserId = document.getElementById('hostUserId').value;
+      const limit = document.getElementById('limit').value;
+      const offset = document.getElementById('offset').value;
+
+      try {
+        const response = await fetch(`${apiBaseUrl}/stages/upcoming/?host_user_id=${hostUserId}&limit=${limit}&offset=${offset}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`, // Ensure you're authenticated
+          },
+        });
+
+        const data = await response.json();
+        displayScheduledStages(data); // Call a function to display the stages on the frontend
+      } catch (error) {
+        displayResponse(error.message); // Display any errors in the response section
+      }
+    });
+
+    // Function to Display Scheduled Stages
+    function displayScheduledStages(data) {
+      const responseContainer = document.getElementById('response');
+      
+      if (data.results && data.results.length > 0) {
+        // Create an HTML table to display the stages
+        let table = '<table border="1" style="width: 100%; border-collapse: collapse;">';
+        table += `
+          <tr>
+            <th>Stage ID</th>
+            <th>Stage Name</th>
+            <th>Host User ID</th>
+            <th>Scheduled Time</th>
+            <th>Status</th>
+          </tr>
+        `;
+
+        data.results.forEach((stage) => {
+          table += `
+            <tr>
+              <td>${stage.stage_id}</td>
+              <td>${stage.stage_name}</td>
+              <td>${stage.host_user_id}</td>
+              <td>${new Date(stage.scheduled_time).toLocaleString()}</td>
+              <td>${stage.status}</td>
+            </tr>
+          `;
+        });
+
+        table += '</table>';
+        responseContainer.innerHTML = table; // Display the table in the response section
+      } else {
+        responseContainer.innerHTML = '<p>No stages found.</p>';
+      }
+    }
+
+
+    // Handle Add Comment Form Submission
+// Global variable to store the Bearer token after authentication
+// let accessToken = ''; // Update this value after user logs in
+
+// Function to set the access token (called after successful login)
+function setAccessToken(token) {
+  accessToken = token;
+}
+
+// Handle Add Comment Form Submission
+document.getElementById('addCommentForm').addEventListener('submit', async (event) => {
+  event.preventDefault(); // Prevent default form submission (page reload)
+
+  const stageId = document.getElementById('commentStageId').value; // Get Stage ID from input
+  const content = document.getElementById('content').value; // Get comment content from input
+
+  if (!accessToken) {
+    displayResponse({ error: 'Access token is missing. Please log in first.' });
+    return;
+  }
+
+  try {
+    // Send POST request to the API
+    const response = await fetch(`${apiBaseUrl}/comments/stage/${stageId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`, // Attach Bearer token
+      },
+      body: JSON.stringify({ content }), // Request body
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      displayCommentResponse(data); // Display the response in the UI
+    } else {
+      displayResponse({ error: data.message || 'Failed to add comment' }); // Display error message
+    }
+  } catch (error) {
+    displayResponse({ error: 'An error occurred. Please try again.' }); // Handle network or other errors
+  }
+});
+
+// Function to Display the Add Comment Response
+function displayCommentResponse(data) {
+  const responseContainer = document.getElementById('response');
+
+  // Generate HTML for the comment response
+  const html = `
+    <h4>Comment Added Successfully</h4>
+    <ul>
+      <li><strong>Comment ID:</strong> ${data.comment_id}</li>
+      <li><strong>Content:</strong> ${data.content}</li>
+      <li><strong>User ID:</strong> ${data.user_id}</li>
+      <li><strong>Stage ID:</strong> ${data.stage.stage_id}</li>
+      <li><strong>Parent Comment ID:</strong> ${data.parentCommentId || 'None'}</li>
+      <li><strong>Created At:</strong> ${new Date(data.created_at).toLocaleString()}</li>
+    </ul>
+  `;
+
+  // Update the Response section with the comment details
+  responseContainer.innerHTML = html;
+}
+
+// Utility Function to Display Errors or Other Responses
+function displayResponse(data) {
+  const responseContainer = document.getElementById('response');
+  responseContainer.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+}
+
+
+// Handle Like Stage Form Submission
+document.getElementById('likeStageForm').addEventListener('submit', async (event) => {
+  event.preventDefault(); // Prevent page reload
+
+  const stageId = document.getElementById('likeStageId').value; // Get Stage ID from input
+
+  if (!accessToken) {
+    displayResponse({ error: 'Access token is missing. Please log in first.' });
+    return;
+  }
+
+  try {
+    // Send POST request to like the stage
+    const response = await fetch(`${apiBaseUrl}/likes/stage/${stageId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`, // Attach Bearer token
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      displayLikeResponse(data); // Display the response for the like
+    } else {
+      displayResponse({ error: data.message || 'Failed to like stage' }); // Display error message
+    }
+  } catch (error) {
+    displayResponse({ error: 'An error occurred. Please try again.' }); // Handle network or other errors
+  }
+});
+
+// Handle Get Like Count Form Submission
+document.getElementById('getLikeCountForm').addEventListener('submit', async (event) => {
+  event.preventDefault(); // Prevent page reload
+
+  const stageId = document.getElementById('likeCountStageId').value; // Get Stage ID from input
+
+  try {
+    // Send GET request to fetch like count
+    const response = await fetch(`${apiBaseUrl}/likes/stage/${stageId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`, // Attach Bearer token
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      displayLikeCount(stageId, data); // Display the like count
+    } else {
+      displayResponse({ error: data.message || 'Failed to fetch like count' }); // Display error message
+    }
+  } catch (error) {
+    displayResponse({ error: 'An error occurred. Please try again.' }); // Handle network or other errors
+  }
+});
+
+// Function to Display the Like Response
+function displayLikeResponse(data) {
+  const responseContainer = document.getElementById('response');
+
+  // Generate HTML for the like response
+  const html = `
+    <h4>Stage Liked Successfully</h4>
+    <ul>
+      <li><strong>Like ID:</strong> ${data.like_id}</li>
+      <li><strong>User ID:</strong> ${data.user_id}</li>
+      <li><strong>Stage ID:</strong> ${data.stage.stage_id}</li>
+      <li><strong>Stage Name:</strong> ${data.stage.stage_name}</li>
+      <li><strong>Scheduled Time:</strong> ${new Date(data.stage.scheduled_time).toLocaleString()}</li>
+      <li><strong>Status:</strong> ${data.stage.status}</li>
+      <li><strong>Created At:</strong> ${new Date(data.created_at).toLocaleString()}</li>
+    </ul>
+  `;
+
+  // Update the Response section with the like details
+  responseContainer.innerHTML = html;
+}
+
+// Function to Display the Like Count
+function displayLikeCount(stageId, count) {
+  const responseContainer = document.getElementById('response');
+
+  // Generate HTML for the like count
+  const html = `
+    <h4>Like Count for Stage</h4>
+    <p><strong>Stage ID:</strong> ${stageId}</p>
+    <p><strong>Total Likes:</strong> ${count}</p>
+  `;
+
+  // Update the Response section with the like count
+  responseContainer.innerHTML = html;
+}
+
+// Utility Function to Display Errors or Other Responses
+function displayResponse(data) {
+  const responseContainer = document.getElementById('response');
+  responseContainer.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+}
+
+  </script>
+</body>
+</html>
