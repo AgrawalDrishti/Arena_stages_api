@@ -85,7 +85,7 @@ $ npm run test:cov
 ```
 
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="./public/frontend-img.png" width="" alt="Nest Logo" /></a>
+  <img src="./public/frontend-img.png" width="" alt="Nest Logo" />
 </p>
 
 
